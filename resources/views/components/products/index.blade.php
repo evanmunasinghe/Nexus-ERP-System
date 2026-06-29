@@ -11,6 +11,24 @@
         </button>
     </div>
 
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show no-print" role="alert">
+            <div class="fw-semibold mb-1">Please fix the following:</div>
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <x-searchbar
+        :action="route('products.index')"
+        placeholder="Search products by name, SKU, or description..."
+        :value="$search"
+    />
+
     <x-card>
         <x-table :headers="[
             'SKU Code',
@@ -77,27 +95,45 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold text-muted">Product Name</label>
-                                <input type="text" name="name" class="form-control" placeholder="e.g., Hydraulic Pump" required>
+                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="e.g., Hydraulic Pump" maxlength="255" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold text-muted">SKU / Item Code</label>
-                                <input type="text" name="code" class="form-control" placeholder="e.g., IND-PMP-01" required>
+                                <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}" placeholder="e.g., IND-PMP-01" maxlength="255" required>
+                                @error('code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold text-muted">Cost Price ($)</label>
-                                <input type="number" step="0.01" name="cost" class="form-control" placeholder="0.00" required>
+                                <input type="number" step="0.01" name="cost" class="form-control @error('cost') is-invalid @enderror" value="{{ old('cost') }}" placeholder="0.00" min="0" required>
+                                @error('cost')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold text-muted">Retail Price ($)</label>
-                                <input type="number" step="0.01" name="price" class="form-control" placeholder="0.00" required>
+                                <input type="number" step="0.01" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" placeholder="0.00" min="0" required>
+                                @error('price')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-semibold text-muted">Initial Stock Quantity</label>
-                                <input type="number" name="quantity" class="form-control" placeholder="0" min="0" required>
+                                <input type="number" name="quantity" class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity') }}" placeholder="0" min="0" required>
+                                @error('quantity')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-semibold text-muted">Specification Description</label>
-                                <textarea name="description" class="form-control" rows="3" placeholder="Optional specifications or physical storage locations..."></textarea>
+                                <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3" placeholder="Optional specifications or physical storage locations...">{{ old('description') }}</textarea>
+                                @error('description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>

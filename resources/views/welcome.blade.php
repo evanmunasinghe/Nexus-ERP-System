@@ -35,6 +35,12 @@
             text-transform: uppercase;
             letter-spacing: 0.1rem;
         }
+        .login-panel {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -45,15 +51,21 @@
                 <i class="fa-solid fa-gears text-info me-2"></i> NEXUS ERP
             </a>
             <div class="ms-auto">
-                <a href="{{ route('login') }}" class="btn btn-outline-light px-4 py-2 fw-semibold rounded-pill shadow-sm">
-                    <i class="fa-solid fa-right-to-bracket me-2"></i> Administrative Login
-                </a>
+                @auth
+                    <a href="{{ route('dashboard') }}" class="btn btn-outline-light px-4 py-2 fw-semibold rounded-pill shadow-sm">
+                        <i class="fa-solid fa-gauge me-2"></i> Dashboard
+                    </a>
+                @else
+                    <a href="#login-panel" class="btn btn-outline-light px-4 py-2 fw-semibold rounded-pill shadow-sm">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i> Administrative Login
+                    </a>
+                @endauth
             </div>
         </div>
     </nav>
 
     <div class="container hero-section my-auto">
-        <div class="row align-items-center">
+        <div class="row align-items-center g-5">
             <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
                 <span class="badge system-badge px-3 py-2 mb-3 rounded-pill">v1.0 Production Platform</span>
                 <h1 class="display-4 fw-extrabold text-white mb-3">
@@ -63,42 +75,110 @@
                     A centralized operations environment designed to track internal team structures, manage customer logs, trace raw product stock metrics, and process transactional invoicing seamlessly.
                 </p>
                 <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
-                    <a href="{{ route('login') }}" class="btn btn-info btn-lg px-5 py-3 fw-bold rounded-pill text-dark shadow">
-                        Enter Workspace <i class="fa-solid fa-arrow-right ms-2"></i>
-                    </a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="btn btn-info btn-lg px-5 py-3 fw-bold rounded-pill text-dark shadow">
+                            Enter Workspace <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </a>
+                    @else
+                        <a href="#login-panel" class="btn btn-info btn-lg px-5 py-3 fw-bold rounded-pill text-dark shadow">
+                            Sign In Below <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </a>
+                    @endauth
                 </div>
             </div>
             
             <div class="col-lg-6">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="p-4 feature-card h-100">
-                            <div class="text-info mb-3 fs-3"><i class="fa-solid fa-users-gear"></i></div>
-                            <h5 class="text-white fw-bold">User Management</h5>
-                            <p class="text-muted small mb-0">Role assignment variables and secure access control panels for active enterprise users.</p>
+                <div id="login-panel" class="login-panel p-4 p-md-5 shadow-lg">
+                    <div class="text-center mb-4">
+                        <div class="fs-1 text-info mb-2">
+                            <i class="fa-solid fa-user-shield"></i>
                         </div>
+                        <h2 class="h3 fw-bold mb-1 text-white">Administrative Login</h2>
+                        <p class="text-secondary mb-0">Sign in to access the ERP workspace.</p>
                     </div>
-                    <div class="col-md-6">
-                        <div class="p-4 feature-card h-100">
-                            <div class="text-info mb-3 fs-3"><i class="fa-solid fa-address-book"></i></div>
-                            <h5 class="text-white fw-bold">Customer Directory</h5>
-                            <p class="text-muted small mb-0">Complete CRM logging infrastructure monitoring billing vectors, phone records, and physical routing addresses.</p>
+
+                    @auth
+                        <div class="alert alert-info mb-0" role="alert">
+                            You are already signed in as {{ auth()->user()->name }}.
+                            <a href="{{ route('dashboard') }}" class="alert-link">Open dashboard</a>.
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-4 feature-card h-100">
-                            <div class="text-info mb-3 fs-3"><i class="fa-solid fa-boxes-stacked"></i></div>
-                            <h5 class="text-white fw-bold">Live Stock Tracking</h5>
-                            <p class="text-muted small mb-0">Granular warehousing audits capturing unique product ledger codes, historical manufacturing costs, and live margins.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-4 feature-card h-100">
-                            <div class="text-info mb-3 fs-3"><i class="fa-solid fa-receipt"></i></div>
-                            <h5 class="text-white fw-bold">Atomic Invoicing</h5>
-                            <p class="text-muted small mb-0">Automated ledger processing directly synchronized with warehouse stocks via database transactions.</p>
-                        </div>
-                    </div>
+                    @else
+                        <form method="POST" action="{{ route('login.submit') }}">
+                            @csrf
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value="{{ old('email') }}"
+                                    class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                    autocomplete="email"
+                                    required
+                                    autofocus
+                                >
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                    autocomplete="current-password"
+                                    required
+                                >
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input id="remember" type="checkbox" name="remember" class="form-check-input" @checked(old('remember'))>
+                                <label for="remember" class="form-check-label">Remember me</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-info btn-lg w-100 fw-bold text-dark">
+                                <i class="fa-solid fa-right-to-bracket me-2"></i> Sign in
+                            </button>
+                        </form>
+                    @endauth
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 feature-card h-100">
+                    <div class="text-info mb-3 fs-3"><i class="fa-solid fa-users-gear"></i></div>
+                    <h5 class="text-white fw-bold">User Management</h5>
+                    <p class="text-muted small mb-0">Role assignment variables and secure access control panels for active enterprise users.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 feature-card h-100">
+                    <div class="text-info mb-3 fs-3"><i class="fa-solid fa-address-book"></i></div>
+                    <h5 class="text-white fw-bold">Customer Directory</h5>
+                    <p class="text-muted small mb-0">Complete CRM logging infrastructure monitoring billing vectors, phone records, and physical routing addresses.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 feature-card h-100">
+                    <div class="text-info mb-3 fs-3"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <h5 class="text-white fw-bold">Live Stock Tracking</h5>
+                    <p class="text-muted small mb-0">Granular warehousing audits capturing unique product ledger codes, historical manufacturing costs, and live margins.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="p-4 feature-card h-100">
+                    <div class="text-info mb-3 fs-3"><i class="fa-solid fa-receipt"></i></div>
+                    <h5 class="text-white fw-bold">Atomic Invoicing</h5>
+                    <p class="text-muted small mb-0">Automated ledger processing directly synchronized with warehouse stocks via database transactions.</p>
                 </div>
             </div>
         </div>

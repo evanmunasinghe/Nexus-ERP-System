@@ -9,12 +9,23 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $search = $request->string('search')->trim()->toString();
+
         return view('components.products.index', [
             'products' => Product::query()
+                ->when($search !== '', function ($query) use ($search): void {
+                    $query->where(function ($query) use ($search): void {
+                        $query
+                            ->where('name', 'like', "%{$search}%")
+                            ->orWhere('code', 'like', "%{$search}%")
+                            ->orWhere('description', 'like', "%{$search}%");
+                    });
+                })
                 ->latest()
                 ->get(),
+            'search' => $search,
         ]);
     }
 

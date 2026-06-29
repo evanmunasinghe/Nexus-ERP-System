@@ -11,6 +11,12 @@
         </a>
     </div>
 
+    <x-searchbar
+        :action="route('invoices.index')"
+        placeholder="Search invoices by number, date, customer, or email..."
+        :value="$search"
+    />
+
     <x-card>
         <x-table :headers="[
             'Invoice',
@@ -28,13 +34,21 @@
                     <td class="text-center">{{ $invoice->items->count() }}</td>
                     <td class="text-end fw-semibold">${{ number_format($invoice->total_amount, 2) }}</td>
                     <td class="text-center no-print">
-                        <form action="{{ route('invoices.destroy', $invoice) }}" method="POST" onsubmit="return confirm('Remove this invoice record?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Invoice">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </form>
+                        <div class="btn-group shadow-sm">
+                            <a href="{{ route('invoices.show', $invoice) }}" class="btn btn-sm btn-outline-primary" title="View Printable Invoice">
+                                <i class="fa-solid fa-print"></i>
+                            </a>
+                            <a href="{{ route('invoices.edit', $invoice) }}" class="btn btn-sm btn-outline-secondary" title="Edit Invoice">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <form action="{{ route('invoices.destroy', $invoice) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this invoice record?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Invoice">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @empty

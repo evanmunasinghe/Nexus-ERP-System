@@ -22,10 +22,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('users', UserController::class)->only(['index']);
-    Route::resource('customers', CustomerController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('customers', CustomerController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('products', ProductController::class)->only(['index', 'store', 'destroy']);
-    Route::resource('invoices', InvoiceController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('invoices', InvoiceController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
