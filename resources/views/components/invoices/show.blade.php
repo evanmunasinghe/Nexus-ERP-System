@@ -45,7 +45,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4 no-print">
         <div>
-            <h2 class="mb-1"><i class="fa-solid fa-print text-secondary me-2"></i> Printable Invoice</h2>
+            <h2 class="mb-1"><i class="fa-solid fa-print text-secondary me-2"></i> Print Invoice</h2>
             <p class="text-muted small mb-0">Review and print {{ $invoice->invoice_number }}.</p>
         </div>
         <div class="d-flex gap-2">

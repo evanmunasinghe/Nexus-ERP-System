@@ -81,7 +81,7 @@
                         </a>
                     @else
                         <a href="#login-panel" class="btn btn-info btn-lg px-5 py-3 fw-bold rounded-pill text-dark shadow">
-                            Sign In Below <i class="fa-solid fa-arrow-right ms-2"></i>
+                            Login Here <i class="fa-solid fa-arrow-right ms-2"></i>
                         </a>
                     @endauth
                 </div>
@@ -144,7 +144,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-info btn-lg w-100 fw-bold text-dark">
-                                <i class="fa-solid fa-right-to-bracket me-2"></i> Sign in
+                                <i class="fa-solid fa-right-to-bracket me-2"></i> Login
                             </button>
                         </form>
                     @endauth
@@ -157,28 +157,28 @@
                 <div class="p-4 feature-card h-100">
                     <div class="text-info mb-3 fs-3"><i class="fa-solid fa-users-gear"></i></div>
                     <h5 class="text-white fw-bold">User Management</h5>
-                    <p class="text-muted small mb-0">Role assignment variables and secure access control panels for active enterprise users.</p>
+                    <p class="lead text-secondary mb-4 fs-5">Role assignment variables and secure access control panels for active enterprise users.</p>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="p-4 feature-card h-100">
                     <div class="text-info mb-3 fs-3"><i class="fa-solid fa-address-book"></i></div>
                     <h5 class="text-white fw-bold">Customer Directory</h5>
-                    <p class="text-muted small mb-0">Complete CRM logging infrastructure monitoring billing vectors, phone records, and physical routing addresses.</p>
+                    <p class="lead text-secondary mb-4 fs-5">Complete CRM logging infrastructure monitoring billing vectors, phone records, and physical routing addresses.</p>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="p-4 feature-card h-100">
                     <div class="text-info mb-3 fs-3"><i class="fa-solid fa-boxes-stacked"></i></div>
                     <h5 class="text-white fw-bold">Live Stock Tracking</h5>
-                    <p class="text-muted small mb-0">Granular warehousing audits capturing unique product ledger codes, historical manufacturing costs, and live margins.</p>
+                    <p class="lead text-secondary mb-4 fs-5">Granular warehousing audits capturing unique product ledger codes, historical manufacturing costs, and live margins.</p>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
                 <div class="p-4 feature-card h-100">
                     <div class="text-info mb-3 fs-3"><i class="fa-solid fa-receipt"></i></div>
                     <h5 class="text-white fw-bold">Atomic Invoicing</h5>
-                    <p class="text-muted small mb-0">Automated ledger processing directly synchronized with warehouse stocks via database transactions.</p>
+                    <p class="lead text-secondary mb-4 fs-5">Automated ledger processing directly synchronized with warehouse stocks via database transactions.</p>
                 </div>
             </div>
         </div>
