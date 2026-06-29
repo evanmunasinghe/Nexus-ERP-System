@@ -1,58 +1,201 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Nexus ERP
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Nexus ERP is a Laravel-based administrative system for managing users, customers, product inventory, and invoices.
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.4.1 or newer
+- Composer
+- Node.js and npm
+- MySQL or MariaDB
+- A local web stack such as Herd, XAMPP, Laragon, or Valet
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+> Important: this project may fail Artisan and Composer commands on PHP 8.2 because the installed dependencies require PHP 8.4.1 or newer.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fresh Setup
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Clone the project and enter the project directory:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <repository-url>
+cd ERP
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Install PHP dependencies:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Install frontend dependencies:
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Create the environment file:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+On Windows PowerShell, use:
 
-## License
+```powershell
+Copy-Item .env.example .env
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Generate the Laravel application key:
+
+```bash
+php artisan key:generate
+```
+
+## Database Setup
+
+Create a MySQL database named `erp`.
+
+Using MySQL CLI:
+
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS erp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+```
+
+Or create it manually in phpMyAdmin:
+
+1. Open phpMyAdmin.
+2. Click `New`.
+3. Enter database name `erp`.
+4. Choose `utf8mb4_unicode_ci` collation.
+5. Click `Create`.
+
+Update these values in `.env` if your local database credentials are different:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=erp
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+## Run Migrations and Seeders
+
+Run all database migrations:
+
+```bash
+php artisan migrate
+```
+
+Seed the sample ERP data:
+
+```bash
+php artisan db:seed
+```
+
+For a fresh reset with all seed data:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+The seeder creates sample customers, products, invoices, and invoice items.
+
+## Create the First Admin User
+
+The default seeder does not create a login user. Create one with Tinker:
+
+```bash
+php artisan tinker --execute 'App\Models\User::updateOrCreate(["email" => "admin@example.com"], ["name" => "Admin User", "password" => Illuminate\Support\Facades\Hash::make("password")]);'
+```
+
+Login credentials after running that command:
+
+```text
+Email: admin@example.com
+Password: password
+```
+
+Change this password from the Users page after logging in.
+
+## Run the Application
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+Open the app:
+
+```text
+http://127.0.0.1:8000
+```
+
+For frontend development with Vite:
+
+```bash
+npm run dev
+```
+
+For a production-style frontend build:
+
+```bash
+npm run build
+```
+
+You can also run the combined Laravel development command from `composer.json`:
+
+```bash
+composer run dev
+```
+
+That starts the Laravel server, queue listener, and Vite dev server together.
+
+## Useful Commands
+
+Clear cached Laravel state:
+
+```bash
+php artisan optimize:clear
+```
+
+Show registered routes:
+
+```bash
+php artisan route:list
+```
+
+Run tests:
+
+```bash
+php artisan test --compact
+```
+
+Format PHP code:
+
+```bash
+vendor/bin/pint --dirty --format agent
+```
+
+## Troubleshooting
+
+If Artisan fails with a Composer platform error, check your PHP version:
+
+```bash
+php -v
+```
+
+Use PHP 8.4.1 or newer, then rerun the command.
+
+If the app cannot connect to the database:
+
+1. Make sure MySQL is running.
+2. Confirm the `erp` database exists.
+3. Check `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` in `.env`.
+4. Run `php artisan config:clear`.
+
+If login fails on a fresh database, create the first admin user with the Tinker command above.
+
+If seeded customers or products cannot be deleted, they may already be used by invoices. Delete related invoices first, or keep the records for invoice history.
