@@ -95,7 +95,7 @@
                         <tr>
                             <td><code class="text-dark fw-bold">{{ $invoice->invoice_number }}</code></td>
                             <td>{{ $invoice->customer?->name ?? 'Unknown customer' }}</td>
-                            <td class="text-end fw-semibold">${{ number_format($invoice->total_amount, 2) }}</td>
+                            <td class="text-end fw-semibold">LKR {{ number_format($invoice->total_amount, 2) }}</td>
                         </tr>
                     @empty
                         <tr>

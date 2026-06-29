@@ -46,5 +46,5 @@ test('authenticated users can view a printable invoice', function () {
         ->assertSee('INV-PRINT-001')
         ->assertSee('Acme Industries')
         ->assertSee('Hydraulic Pump')
-        ->assertSee('$250.00');
+        ->assertSee('LKR 250.00');
 });

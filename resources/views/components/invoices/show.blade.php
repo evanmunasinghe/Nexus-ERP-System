@@ -106,15 +106,15 @@
                                 <div class="text-muted small">{{ $item->product?->code ?? 'No SKU' }}</div>
                             </td>
                             <td class="text-center">{{ $item->quantity }}</td>
-                            <td class="text-end">${{ number_format((float) $item->unit_price, 2) }}</td>
-                            <td class="text-end fw-semibold">${{ number_format((float) $item->subtotal, 2) }}</td>
+                            <td class="text-end">LKR {{ number_format((float) $item->unit_price, 2) }}</td>
+                            <td class="text-end fw-semibold">LKR {{ number_format((float) $item->subtotal, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="3" class="text-end border-0 pt-4">Total</th>
-                        <th class="text-end border-0 pt-4 fs-5">${{ number_format((float) $invoice->total_amount, 2) }}</th>
+                        <th class="text-end border-0 pt-4 fs-5">LKR {{ number_format((float) $invoice->total_amount, 2) }}</th>
                     </tr>
                 </tfoot>
             </table>

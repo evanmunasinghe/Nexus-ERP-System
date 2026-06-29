@@ -48,8 +48,8 @@
                             <div class="fw-semibold text-dark">{{ $product->name }}</div>
                             <span class="text-muted small d-block text-truncate" style="max-width: 300px;">{{ $product->description ?? 'No description provided' }}</span>
                         </td>
-                        <td class="text-end">${{ number_format($product->cost, 2) }}</td>
-                        <td class="text-end fw-semibold text-primary">${{ number_format($product->price, 2) }}</td>
+                        <td class="text-end">LKR {{ number_format($product->cost, 2) }}</td>
+                        <td class="text-end fw-semibold text-primary">LKR {{ number_format($product->price, 2) }}</td>
                         <td class="text-center">
                             @if($product->quantity <= 0)
                                 <span class="badge bg-danger px-3 py-2 rounded-pill w-75"><i class="fa-solid fa-triangle-exclamation me-1"></i> Out of Stock</span>
@@ -112,14 +112,14 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold text-muted">Cost Price ($)</label>
+                                <label class="form-label fw-semibold text-muted">Cost Price (LKR)</label>
                                 <input type="number" step="0.01" name="cost" class="form-control @error('cost') is-invalid @enderror" value="{{ old('cost') }}" placeholder="0.00" min="0" required>
                                 @error('cost')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold text-muted">Retail Price ($)</label>
+                                <label class="form-label fw-semibold text-muted">Retail Price (LKR)</label>
                                 <input type="number" step="0.01" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" placeholder="0.00" min="0" required>
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>

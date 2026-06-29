@@ -35,7 +35,7 @@
                         <td>{{ $invoice->customer?->name ?? 'Unknown customer' }}</td>
                         <td>{{ $invoice->invoice_date?->format('M d, Y') }}</td>
                         <td class="text-center">{{ $invoice->items->count() }}</td>
-                        <td class="text-end fw-semibold">${{ number_format($invoice->total_amount, 2) }}</td>
+                        <td class="text-end fw-semibold">LKR {{ number_format($invoice->total_amount, 2) }}</td>
                         <td class="text-center no-print">
                             <div class="btn-group shadow-sm">
                                 <a href="{{ route('invoices.show', $invoice) }}" class="btn btn-sm btn-outline-primary" title="View Printable Invoice">
