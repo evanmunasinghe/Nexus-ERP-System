@@ -24,45 +24,49 @@
     @endif
 
     <x-searchbar
+        id="users-search-form"
         :action="route('users.index')"
+        target="#users-search-results"
         placeholder="Search users by name or email..."
         :value="$search"
     />
 
-    <x-card>
-        <x-table :headers="[
-            'Name',
-            'Email',
-            'Created',
-            ['text' => 'Actions', 'align' => 'center', 'class' => 'no-print'],
-        ]">
-            @forelse($users as $user)
-                <tr>
-                    <td class="fw-semibold">{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td class="text-muted">{{ $user->created_at?->format('M d, Y') }}</td>
-                    <td class="text-center no-print">
-                        <div class="btn-group shadow-sm">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit User" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this user account?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete User" @disabled(auth()->id() === $user->id)>
-                                    <i class="fa-solid fa-trash"></i>
+    <div id="users-search-results">
+        <x-card>
+            <x-table :headers="[
+                'Name',
+                'Email',
+                'Created',
+                ['text' => 'Actions', 'align' => 'center', 'class' => 'no-print'],
+            ]">
+                @forelse($users as $user)
+                    <tr>
+                        <td class="fw-semibold">{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td class="text-muted">{{ $user->created_at?->format('M d, Y') }}</td>
+                        <td class="text-center no-print">
+                            <div class="btn-group shadow-sm">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit User" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="text-center py-5 text-muted">No users found.</td>
-                </tr>
-            @endforelse
-        </x-table>
-    </x-card>
+                                <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this user account?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete User" @disabled(auth()->id() === $user->id)>
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center py-5 text-muted">No users found.</td>
+                    </tr>
+                @endforelse
+            </x-table>
+        </x-card>
+    </div>
 
     <div class="modal fade" id="createUserModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

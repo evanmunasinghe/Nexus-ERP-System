@@ -8,6 +8,26 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+test('index search forms render ajax hooks', function (string $routeName, string $formId, string $targetId) {
+    $admin = User::factory()->create();
+
+    $response = $this
+        ->actingAs($admin)
+        ->get(route($routeName));
+
+    $response
+        ->assertSuccessful()
+        ->assertSee('data-ajax-search', false)
+        ->assertSee('id="'.$formId.'"', false)
+        ->assertSee('data-search-target="#'.$targetId.'"', false)
+        ->assertSee('id="'.$targetId.'"', false);
+})->with([
+    'users' => ['users.index', 'users-search-form', 'users-search-results'],
+    'customers' => ['customers.index', 'customers-search-form', 'customers-search-results'],
+    'products' => ['products.index', 'products-search-form', 'products-search-results'],
+    'invoices' => ['invoices.index', 'invoices-search-form', 'invoices-search-results'],
+]);
+
 test('users can be searched by name or email', function () {
     $admin = User::factory()->create();
     User::factory()->create([

@@ -1,5 +1,7 @@
 @props([
     'action',
+    'target',
+    'id' => 'search-form',
     'placeholder' => 'Search records...',
     'value' => null,
 ])
@@ -8,7 +10,7 @@
     $searchValue = $value ?? request('search');
 @endphp
 
-<form action="{{ $action }}" method="GET" class="mb-4 no-print">
+<form id="{{ $id }}" action="{{ $action }}" method="GET" class="mb-4 no-print" data-ajax-search data-search-target="{{ $target }}">
     <div class="input-group shadow-sm">
         <span class="input-group-text bg-white">
             <i class="fa-solid fa-magnifying-glass text-secondary"></i>
@@ -22,7 +24,7 @@
             aria-label="{{ $placeholder }}"
         >
         @if(filled($searchValue))
-            <a href="{{ $action }}" class="btn btn-outline-secondary">
+            <a href="{{ $action }}" class="btn btn-outline-secondary" data-ajax-clear>
                 <i class="fa-solid fa-xmark me-1"></i> Clear
             </a>
         @endif

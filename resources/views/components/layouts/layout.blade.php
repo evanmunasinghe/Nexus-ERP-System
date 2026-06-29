@@ -37,6 +37,103 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (() => {
+            const loadSearchResults = async (url, form, shouldPushState = true) => {
+                const targetSelector = form.dataset.searchTarget;
+                const target = document.querySelector(targetSelector);
+
+                if (! target) {
+                    window.location.href = url;
+                    return;
+                }
+
+                form.querySelectorAll('button, input, a').forEach((element) => {
+                    element.classList.add('disabled');
+                    element.setAttribute('aria-disabled', 'true');
+                });
+                target.setAttribute('aria-busy', 'true');
+
+                try {
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                    });
+
+                    if (! response.ok) {
+                        throw new Error('Search request failed.');
+                    }
+
+                    const html = await response.text();
+                    const documentFragment = new DOMParser().parseFromString(html, 'text/html');
+                    const nextTarget = documentFragment.querySelector(targetSelector);
+                    const nextForm = documentFragment.getElementById(form.id);
+
+                    if (! nextTarget || ! nextForm) {
+                        throw new Error('Search response was missing expected content.');
+                    }
+
+                    target.outerHTML = nextTarget.outerHTML;
+                    form.outerHTML = nextForm.outerHTML;
+
+                    if (shouldPushState) {
+                        window.history.pushState({}, '', url);
+                    }
+                } catch (error) {
+                    window.location.href = url;
+                }
+            };
+
+            document.addEventListener('submit', (event) => {
+                const form = event.target.closest('form[data-ajax-search]');
+
+                if (! form) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                const url = new URL(form.action, window.location.origin);
+                const formData = new FormData(form);
+                const search = String(formData.get('search') ?? '').trim();
+
+                if (search !== '') {
+                    url.searchParams.set('search', search);
+                } else {
+                    url.searchParams.delete('search');
+                }
+
+                loadSearchResults(url.toString(), form);
+            });
+
+            document.addEventListener('click', (event) => {
+                const link = event.target.closest('a[data-ajax-clear]');
+
+                if (! link) {
+                    return;
+                }
+
+                const form = link.closest('form[data-ajax-search]');
+
+                if (! form) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                loadSearchResults(link.href, form);
+            });
+
+            window.addEventListener('popstate', () => {
+                const form = document.querySelector('form[data-ajax-search]');
+
+                if (form) {
+                    loadSearchResults(window.location.href, form, false);
+                }
+            });
+        })();
+    </script>
     {{ $scripts ?? '' }}
 </body>
 </html>

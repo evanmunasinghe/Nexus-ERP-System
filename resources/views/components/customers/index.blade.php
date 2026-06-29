@@ -24,47 +24,51 @@
     @endif
 
     <x-searchbar
+        id="customers-search-form"
         :action="route('customers.index')"
+        target="#customers-search-results"
         placeholder="Search customers by name, email, phone, or address..."
         :value="$search"
     />
 
-    <x-card>
-        <x-table :headers="[
-            'Name',
-            'Email',
-            'Phone',
-            'Address',
-            ['text' => 'Actions', 'align' => 'center', 'class' => 'no-print'],
-        ]">
-            @forelse($customers as $customer)
-                <tr>
-                    <td class="fw-semibold">{{ $customer->name }}</td>
-                    <td>{{ $customer->email }}</td>
-                    <td>{{ $customer->phone }}</td>
-                    <td class="text-muted">{{ $customer->address }}</td>
-                    <td class="text-center no-print">
-                        <div class="btn-group shadow-sm">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit Customer" data-bs-toggle="modal" data-bs-target="#editCustomerModal{{ $customer->id }}">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <form action="{{ route('customers.destroy', $customer) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this customer?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Customer">
-                                    <i class="fa-solid fa-trash"></i>
+    <div id="customers-search-results">
+        <x-card>
+            <x-table :headers="[
+                'Name',
+                'Email',
+                'Phone',
+                'Address',
+                ['text' => 'Actions', 'align' => 'center', 'class' => 'no-print'],
+            ]">
+                @forelse($customers as $customer)
+                    <tr>
+                        <td class="fw-semibold">{{ $customer->name }}</td>
+                        <td>{{ $customer->email }}</td>
+                        <td>{{ $customer->phone }}</td>
+                        <td class="text-muted">{{ $customer->address }}</td>
+                        <td class="text-center no-print">
+                            <div class="btn-group shadow-sm">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit Customer" data-bs-toggle="modal" data-bs-target="#editCustomerModal{{ $customer->id }}">
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="text-center py-5 text-muted">No customers registered yet.</td>
-                </tr>
-            @endforelse
-        </x-table>
-    </x-card>
+                                <form action="{{ route('customers.destroy', $customer) }}" method="POST" class="d-inline" onsubmit="return confirm('Remove this customer?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Customer">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">No customers registered yet.</td>
+                    </tr>
+                @endforelse
+            </x-table>
+        </x-card>
+    </div>
 
     <div class="modal fade" id="createCustomerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
